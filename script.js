@@ -219,45 +219,56 @@ function z5() {
 
     let answers = [];
 
-
     for (let i = 0; i < questions.length; i++) {
         let res_prompt = prompt(questions[i]);
-        answers.push(res_prompt ? res_prompt : "—");
+        answers.push(res_prompt ? res_prompt : "-");
     }
+
+    let imya = answers[0];
+    let fam = answers[1];
+
+    function sklonenie(name) {
+        if (!name || name === "—") return "";
+        if ("бвгджзйклмнпрстфхцчшщ".includes(name.slice(-1).toLowerCase())) return name + "а";
+        if (name.slice(-1).toLowerCase() === "а") {
+            return name.slice(0, -1) + "ы";
+        }
+
+        if (name.slice(-1).toLowerCase() === "я") {
+            return name.slice(0, -1) + "и";
+        }
+        else {
+            return name;
+        }
+    }
+
+    let fio_skl = sklonenie(fam) + " " + sklonenie(imya);
 
     let nowtime = new Date().getFullYear();
     let year = parseInt(answers[2]);
-    let age = "не указан";
+    let age = isNaN(year) ? "не указан" : (nowtime - year);
 
-    if (!isNaN(year)) {
-        age = nowtime - year;
-    }
-
-    let table = `
-        <table border="1" style="border-collapse: collapse; width: 100%; text-align: left;">
-            <tr>
-                <th style="padding: 8px; background: #f2f2f2;">Вопрос</th>
-                <th style="padding: 8px; background: #f2f2f2;">Ответ</th>
-            </tr>
-    `;
+    let table = `<h3>Анкета ${fio_skl}</h3>`;
+    table += `<table border="1" style="border-collapse: collapse; width: 100%;">
+                <tr>
+                    <th style="padding: 8px;">Вопрос</th>
+                    <th style="padding: 8px;">Ответ</th>
+                </tr>`;
 
     for (let i = 0; i < questions.length; i++) {
         table += `
             <tr>
                 <td style="padding: 8px;">${questions[i]}</td>
                 <td style="padding: 8px;">${answers[i]}</td>
-            </tr>
-        `;
+            </tr>`;
     }
 
     table += `
-            <tr style="font-weight: bold; background: #e6f7ff;">
+            <tr style="font-weight: bold;">
                 <td style="padding: 8px;">Рассчитанный возраст</td>
                 <td style="padding: 8px;">${age}</td>
             </tr>
-        </table>
-    `;
+        </table>`;
 
     res.innerHTML = table;
 }
-
