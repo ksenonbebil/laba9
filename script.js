@@ -246,7 +246,15 @@ function z5() {
 
     let nowtime = new Date().getFullYear();
     let year = parseInt(answers[2]);
-    let age = isNaN(year) ? "не указан" : (nowtime - year);
+    let age;
+
+    if (!isNaN(year) && year !== null) {
+        age = nowtime - year;
+    } else {
+        age = "не указан";
+    }
+
+
 
     let table = `<h3>Анкета ${fio_skl}</h3>`;
     table += `<table border="1" style="border-collapse: collapse; width: 100%;">
