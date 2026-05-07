@@ -54,7 +54,12 @@ function z2() {
 function sidelength(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
-
+function perimetr(a, b, c) {
+    return a + b + c;
+}
+function ploshad(p, a, b, c) {
+    return Math.sqrt(p * (p - a) * (p - b) * (p - c));
+}
 function triangle() {
     let x1 = parseFloat(document.getElementById('x1').value);
     let y1 = parseFloat(document.getElementById('y1').value);
@@ -72,9 +77,10 @@ function triangle() {
     let b = sidelength(x2, y2, x3, y3);
     let c = sidelength(x3, y3, x1, y1);
 
-    let P = a + b + c;
+    let P = perimetr(a, b, c);
     let p = P / 2; //полупериметр
-    let S = Math.sqrt(p * (p - a) * (p - b) * (p - c));
+
+    let S = ploshad(p, a, b, c);
 
     const result = document.getElementById('z2-res');
     result.innerHTML = `
@@ -200,6 +206,25 @@ function z4() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Задание 5
 
+function sklonenie(name) {
+    let lastbukva = name.slice(-1);
+    let wordminuslast = name.slice(0, -1);
+
+    if (!name || name === "-") return "";
+
+    if ("бвгджзйклмнпрстфхцчшщ".includes(lastbukva.toLowerCase())) return name + "а";
+
+    if (lastbukva.toLowerCase() === "а") {
+        return wordminuslast + "ы";
+    }
+
+    if (lastbukva.toLowerCase() === "я") {
+        return wordminuslast + "и";
+    }
+    else {
+        return name;
+    }
+}
 
 function z5() {
     const res = document.querySelector("#result");
@@ -221,33 +246,23 @@ function z5() {
 
     for (let i = 0; i < questions.length; i++) {
         let res_prompt = prompt(questions[i]);
-        answers.push(res_prompt ? res_prompt : "-");
+        if (res_prompt) {
+            answers.push(res_prompt);
+        } else {
+            answers.push("-");
+        }
+
     }
 
     let imya = answers[0];
     let fam = answers[1];
-
-    function sklonenie(name) {
-        if (!name || name === "—") return "";
-        if ("бвгджзйклмнпрстфхцчшщ".includes(name.slice(-1).toLowerCase())) return name + "а";
-        if (name.slice(-1).toLowerCase() === "а") {
-            return name.slice(0, -1) + "ы";
-        }
-
-        if (name.slice(-1).toLowerCase() === "я") {
-            return name.slice(0, -1) + "и";
-        }
-        else {
-            return name;
-        }
-    }
-
     let fio_skl = sklonenie(fam) + " " + sklonenie(imya);
 
+    //вычисление возраста
     let nowtime = new Date().getFullYear();
     let year = parseInt(answers[2]);
-    let age;
 
+    let age;
     if (!isNaN(year) && year !== null) {
         age = nowtime - year;
     } else {
